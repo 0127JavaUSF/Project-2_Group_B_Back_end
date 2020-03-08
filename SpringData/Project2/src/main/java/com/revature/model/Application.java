@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -19,12 +20,16 @@ public class Application {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
 	
+	@ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+	@JoinColumn(name="user_id", nullable=false)
+	private User user;
+	
 	//qa is a list of the custom questions and answers on the application
 	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
-	@JoinColumn(name="app_id")
+	@JoinColumn(name="app_id", nullable=false)
 	private List<ApplicationQA> qa;
 	
-	@Column
+	@Column(nullable=false)
     private String firstName;
 
 	@Column
@@ -36,9 +41,8 @@ public class Application {
 	@Column
     private String phone;
 
-	//not sure we should include this for privacy reasons. an applicant can be contacted without their home address
-//	@Column
-//    private String address;
+	@Column
+    private String address;
 	
 	@Column
     private String city;
@@ -46,7 +50,9 @@ public class Application {
 	@Column
     private String state;
 	
-	@Column
+	//0 is not viewed, 1 is viewed
+	//default is not viewed
+	@Column(columnDefinition = "int default 0")
     private Integer status;
 	
 	@Column
@@ -54,18 +60,20 @@ public class Application {
 	
 	public Application() {}
 
-	public Application(Integer id, List<ApplicationQA> qa, String firstName, String lastName, String email,
-			String phone, String city, String state, Integer Status, String zipCode) {
+	public Application(Integer id, User user, List<ApplicationQA> qa, String firstName, String lastName,
+			String email, String phone, String address, String city, String state, Integer status, String zipCode) {
 		super();
 		this.id = id;
+		this.user = user;
 		this.qa = qa;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.phone = phone;
+		this.address = address;
 		this.city = city;
 		this.state = state;
-		this.status = Status;
+		this.status = status;
 		this.zipCode = zipCode;
 	}
 
@@ -75,6 +83,14 @@ public class Application {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public List<ApplicationQA> getQa() {
@@ -117,6 +133,14 @@ public class Application {
 		this.phone = phone;
 	}
 
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
 	public String getCity() {
 		return city;
 	}
@@ -147,5 +171,9 @@ public class Application {
 
 	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 }
