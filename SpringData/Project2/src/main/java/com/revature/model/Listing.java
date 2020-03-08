@@ -1,10 +1,14 @@
 package com.revature.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Listing {
@@ -13,6 +17,10 @@ public class Listing {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
 
+	@ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+	@JoinColumn(name="user_id", nullable=false)
+	private User user;
+	
 	@Column
     private String about;
 	@Column
@@ -42,10 +50,12 @@ public class Listing {
     
     public Listing() {}
     
-	public Listing(Integer id, String about, Float age, String city, Integer color, Integer fixed, String[] imageUrls,
-			String name, Integer sex, String species, String state, Integer type, String[] videoUrls, String zipCode) {
+	public Listing(Integer id, User user, String about, Float age, String city, Integer color, Integer fixed,
+			String[] imageUrls, String name, Integer sex, String species, String state, Integer type,
+			String[] videoUrls, String zipCode) {
 		super();
 		this.id = id;
+		this.user = user;
 		this.about = about;
 		this.age = age;
 		this.city = city;
@@ -60,13 +70,22 @@ public class Listing {
 		this.videoUrls = videoUrls;
 		this.zipCode = zipCode;
 	}
-	
+
 	public Integer getId() {
 		return id;
 	}
 	public void setId(Integer id) {
 		this.id = id;
 	}
+	
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	public String getAbout() {
 		return about;
 	}
