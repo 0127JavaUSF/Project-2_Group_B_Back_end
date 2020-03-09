@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Listing {
@@ -41,10 +42,20 @@ public class Listing {
     private String species;
     @Column
     private String state;
+	
+    /*
+    @OneToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+	@JoinColumn(name="type_id", nullable=false)	
+    private Integer type;
+    */
+    
     @Column
     private Integer type;
+
     @Column
     private String[] videoUrls;
+    @Column
+    private Float weight;
     @Column
     private String zipCode;
     
@@ -52,7 +63,7 @@ public class Listing {
     
 	public Listing(Integer id, User user, String about, Float age, String city, Integer color, Integer fixed,
 			String[] imageUrls, String name, Integer sex, String species, String state, Integer type,
-			String[] videoUrls, String zipCode) {
+			String[] videoUrls, Float weight, String zipCode) {
 		super();
 		this.id = id;
 		this.user = user;
@@ -68,6 +79,7 @@ public class Listing {
 		this.state = state;
 		this.type = type;
 		this.videoUrls = videoUrls;
+		this.weight = weight;
 		this.zipCode = zipCode;
 	}
 
@@ -158,6 +170,15 @@ public class Listing {
 	public void setVideoUrls(String[] videoUrls) {
 		this.videoUrls = videoUrls;
 	}
+	
+	public Float getWeight() {
+		return weight;
+	}
+
+	public void setWeight(Float weight) {
+		this.weight = weight;
+	}
+
 	public String getZipCode() {
 		return zipCode;
 	}
