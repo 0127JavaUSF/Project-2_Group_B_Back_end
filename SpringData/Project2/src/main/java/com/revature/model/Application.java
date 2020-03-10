@@ -1,5 +1,6 @@
 package com.revature.model;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Application {
@@ -19,6 +21,10 @@ public class Application {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
+	
+	@Column(nullable=false)
+	//@NotNull
+	private LocalDate date;
 	
 	@ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinColumn(name="user_id", nullable=false)
@@ -60,10 +66,11 @@ public class Application {
 	
 	public Application() {}
 
-	public Application(Integer id, User user, List<ApplicationQA> qa, String firstName, String lastName,
+	public Application(Integer id, LocalDate date, User user, List<ApplicationQA> qa, String firstName, String lastName,
 			String email, String phone, String address, String city, String state, Integer status, String zipCode) {
 		super();
 		this.id = id;
+		this.date = date;
 		this.user = user;
 		this.qa = qa;
 		this.firstName = firstName;
@@ -83,6 +90,14 @@ public class Application {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+	
+	public LocalDate getDate() {
+		return date;
+	}
+
+	public void setDate(LocalDate date) {
+		this.date = date;
 	}
 
 	public User getUser() {

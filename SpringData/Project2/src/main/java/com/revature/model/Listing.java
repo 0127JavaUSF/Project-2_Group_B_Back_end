@@ -1,5 +1,8 @@
 package com.revature.model;
 
+import java.util.List;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Listing {
@@ -17,7 +21,7 @@ public class Listing {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
 
-	@ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	@JoinColumn(name="user_id", nullable=false)
 	private User user;
 	
@@ -31,8 +35,11 @@ public class Listing {
     private Integer color;
     @Column
     private Integer fixed;
-    @Column
-    private String[] imageUrls;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name="listing_id")	
+    private Set<ImageUrl> imageUrls;
+    
     @Column
     private String name;
     @Column
@@ -41,18 +48,30 @@ public class Listing {
     private String species;
     @Column
     private String state;
+	
+    /*
+    @OneToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+	@JoinColumn(name="type_id", nullable=false)	
+    private Integer type;
+    */
+    
     @Column
     private Integer type;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name="listing_id")	
+    private Set<VideoUrl> videoUrls;
+    
     @Column
-    private String[] videoUrls;
+    private Float weight;
     @Column
     private String zipCode;
     
     public Listing() {}
     
 	public Listing(Integer id, User user, String about, Float age, String city, Integer color, Integer fixed,
-			String[] imageUrls, String name, Integer sex, String species, String state, Integer type,
-			String[] videoUrls, String zipCode) {
+			Set<ImageUrl> imageUrls, String name, Integer sex, String species, String state, Integer type,
+			Set<VideoUrl> videoUrls, Float weight, String zipCode) {
 		super();
 		this.id = id;
 		this.user = user;
@@ -68,7 +87,24 @@ public class Listing {
 		this.state = state;
 		this.type = type;
 		this.videoUrls = videoUrls;
+		this.weight = weight;
 		this.zipCode = zipCode;
+	}
+
+	public Set<ImageUrl> getImageUrls() {
+		return imageUrls;
+	}
+
+	public void setImageUrls(Set<ImageUrl> imageUrls) {
+		this.imageUrls = imageUrls;
+	}
+
+	public Set<VideoUrl> getVideoUrls() {
+		return videoUrls;
+	}
+
+	public void setVideoUrls(Set<VideoUrl> videoUrls) {
+		this.videoUrls = videoUrls;
 	}
 
 	public Integer getId() {
@@ -116,12 +152,7 @@ public class Listing {
 	public void setFixed(Integer fixed) {
 		this.fixed = fixed;
 	}
-	public String[] getImageUrls() {
-		return imageUrls;
-	}
-	public void setImageUrls(String[] imageUrls) {
-		this.imageUrls = imageUrls;
-	}
+
 	public String getName() {
 		return name;
 	}
@@ -152,12 +183,15 @@ public class Listing {
 	public void setType(Integer type) {
 		this.type = type;
 	}
-	public String[] getVideoUrls() {
-		return videoUrls;
+	
+	public Float getWeight() {
+		return weight;
 	}
-	public void setVideoUrls(String[] videoUrls) {
-		this.videoUrls = videoUrls;
+
+	public void setWeight(Float weight) {
+		this.weight = weight;
 	}
+
 	public String getZipCode() {
 		return zipCode;
 	}
