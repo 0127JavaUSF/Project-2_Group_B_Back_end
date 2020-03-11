@@ -261,11 +261,11 @@ public class MainDriver {
 		breedsDao.insert(breed);
 		
 		//Animal genders
-		AnimalGender gender = new AnimalGender("Female");
+		AnimalGender gender = new AnimalGender("Unknown");
 		genderDao.insert(gender);
 		gender = new AnimalGender("Male");
 		genderDao.insert(gender);
-		gender = new AnimalGender("Unknown");
+		gender = new AnimalGender("Female");
 		genderDao.insert(gender);
 		
 		
