@@ -1,5 +1,8 @@
 package com.revature.model;
 
+import java.sql.Timestamp;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Listing {
@@ -17,9 +21,12 @@ public class Listing {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
 
-	@ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="user_id", nullable=false)
 	private User user;
+	
+	@Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+	private Timestamp date;
 	
 	@Column
     private String about;
@@ -31,8 +38,11 @@ public class Listing {
     private Integer color;
     @Column
     private Integer fixed;
-    @Column
-    private String[] imageUrls;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name="listing_id")	
+    private Set<ImageUrl> imageUrls;
+    
     @Column
     private String name;
     @Column
@@ -41,21 +51,34 @@ public class Listing {
     private String species;
     @Column
     private String state;
+	
+    /*
+    @OneToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+	@JoinColumn(name="type_id", nullable=false)	
+    private Integer type;
+    */
+    
     @Column
     private Integer type;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name="listing_id")	
+    private Set<VideoUrl> videoUrls;
+    
     @Column
-    private String[] videoUrls;
+    private Float weight;
     @Column
     private String zipCode;
     
     public Listing() {}
-    
-	public Listing(Integer id, User user, String about, Float age, String city, Integer color, Integer fixed,
-			String[] imageUrls, String name, Integer sex, String species, String state, Integer type,
-			String[] videoUrls, String zipCode) {
+
+	public Listing(Integer id, User user, Timestamp date, String about, Float age, String city, Integer color,
+			Integer fixed, Set<ImageUrl> imageUrls, String name, Integer sex, String species, String state,
+			Integer type, Set<VideoUrl> videoUrls, Float weight, String zipCode) {
 		super();
 		this.id = id;
 		this.user = user;
+		this.date = date;
 		this.about = about;
 		this.age = age;
 		this.city = city;
@@ -68,16 +91,18 @@ public class Listing {
 		this.state = state;
 		this.type = type;
 		this.videoUrls = videoUrls;
+		this.weight = weight;
 		this.zipCode = zipCode;
 	}
 
 	public Integer getId() {
 		return id;
 	}
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 	public User getUser() {
 		return user;
 	}
@@ -86,81 +111,122 @@ public class Listing {
 		this.user = user;
 	}
 
+	public Timestamp getDate() {
+		return date;
+	}
+
+	public void setDate(Timestamp date) {
+		this.date = date;
+	}
+
 	public String getAbout() {
 		return about;
 	}
+
 	public void setAbout(String about) {
 		this.about = about;
 	}
+
 	public Float getAge() {
 		return age;
 	}
+
 	public void setAge(Float age) {
 		this.age = age;
 	}
+
 	public String getCity() {
 		return city;
 	}
+
 	public void setCity(String city) {
 		this.city = city;
 	}
+
 	public Integer getColor() {
 		return color;
 	}
+
 	public void setColor(Integer color) {
 		this.color = color;
 	}
+
 	public Integer getFixed() {
 		return fixed;
 	}
+
 	public void setFixed(Integer fixed) {
 		this.fixed = fixed;
 	}
-	public String[] getImageUrls() {
+
+	public Set<ImageUrl> getImageUrls() {
 		return imageUrls;
 	}
-	public void setImageUrls(String[] imageUrls) {
+
+	public void setImageUrls(Set<ImageUrl> imageUrls) {
 		this.imageUrls = imageUrls;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public Integer getSex() {
 		return sex;
 	}
+
 	public void setSex(Integer sex) {
 		this.sex = sex;
 	}
+
 	public String getSpecies() {
 		return species;
 	}
+
 	public void setSpecies(String species) {
 		this.species = species;
 	}
+
 	public String getState() {
 		return state;
 	}
+
 	public void setState(String state) {
 		this.state = state;
 	}
+
 	public Integer getType() {
 		return type;
 	}
+
 	public void setType(Integer type) {
 		this.type = type;
 	}
-	public String[] getVideoUrls() {
+
+	public Set<VideoUrl> getVideoUrls() {
 		return videoUrls;
 	}
-	public void setVideoUrls(String[] videoUrls) {
+
+	public void setVideoUrls(Set<VideoUrl> videoUrls) {
 		this.videoUrls = videoUrls;
 	}
+
+	public Float getWeight() {
+		return weight;
+	}
+
+	public void setWeight(Float weight) {
+		this.weight = weight;
+	}
+
 	public String getZipCode() {
 		return zipCode;
 	}
+
 	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
 	}
