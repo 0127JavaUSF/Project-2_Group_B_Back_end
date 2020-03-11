@@ -1,24 +1,30 @@
 package com.revature.controller;
 
-import java.util.List;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Optional;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.revature.dao.FoodDao;
 import com.revature.dao.ListingDao;
+import com.revature.dao.TemplateDao;
 import com.revature.model.Food;
 import com.revature.model.Listing;
+import com.revature.model.Template;
 
 @Controller
 @CrossOrigin(origins="http://localhost:4200") 
@@ -29,6 +35,9 @@ public class FoodController {
 	
 	@Autowired
 	private ListingDao listingDao;
+	
+	@Autowired
+	private TemplateDao templateDao;
 
 	@GetMapping("/food.app")
 	public @ResponseBody Food findFood() {
@@ -55,7 +64,7 @@ public class FoodController {
 	}
 	
 	@GetMapping(value="/listing.app", produces="application/json", params= {"id"})
-	public @ResponseBody Listing findById(int id) {
+	public @ResponseBody Listing findListingById(int id) {
 		
 		Optional<Listing> res =  listingDao.findById(id);
 		if(res.isPresent() == false)
@@ -65,22 +74,49 @@ public class FoodController {
 	}
 	
 	@GetMapping(value="/listing/search.app", produces="application/json", params= {"page", "type", "city"})
-	public @ResponseBody Page<Listing> findByTypeAndCity(int page, int type, String city) {
+	public @ResponseBody Page<Listing> findListingByTypeAndCity(int page, int type, String city) {
 		
-		//Pageable pageable = PageRequest.of(0, 16, Sort.by("city").descending());
-		Pageable pageable = PageRequest.of(page, 16);
+		//Pageable pageable = PageRequest.of(0, 8, Sort.by("city").descending());
+		Pageable pageable = PageRequest.of(page, 2);
 		
 		if(type > 0 && city.isEmpty() == false) {
-			return listingDao.findByTypeAndCity(type, city, pageable);
+			return listingDao.findByTypeAndCityContainingIgnoreCase(type, city, pageable);
 		}
 		else if(type > 0) {
 			return listingDao.findByType(type, pageable);
 		}
 		else if(city.isEmpty() == false) {
-			return listingDao.findByCity(city, pageable);
+			return listingDao.findByCityContainingIgnoreCase(city, pageable);
 		}
 		else {
 			return listingDao.findAll(pageable);
 		}
+	}
+	
+	@PostMapping(value="/template/create.app", consumes = "application/json", produces = "application/json")
+	public ResponseEntity<Template> createTemplate(@RequestBody @Valid Template template) {
+		
+		//test
+		template.getUser().setId(1);
+		
+		Timestamp ts = new Timestamp(Instant.now().toEpochMilli());
+		template.setDate(ts);
+	    		
+		Template createdTemplate = templateDao.save(template);
+		
+		createdTemplate.setUser(null); //do not return user
+		
+		return ResponseEntity
+				.status(201)
+				.body(createdTemplate);
+	}
+	
+	@GetMapping(value="/template.app", produces="application/json", params= {"listingId"})
+	public @ResponseBody Template findTemplateByListingId(int listingId) {
+		
+		Listing listing = new Listing();
+		listing.setId(listingId);
+				
+		return templateDao.findByListing(listing);
 	}
 }
