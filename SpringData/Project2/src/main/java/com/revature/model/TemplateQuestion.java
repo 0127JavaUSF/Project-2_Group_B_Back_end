@@ -7,25 +7,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class ApplicationQA {
+public class TemplateQuestion {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
 	
-	@Column(nullable=false)
-    private String question;
-
-	@Column(nullable=false)
-    private String answer;
+	@Column(nullable = false)
+	private String question;
 	
-	public ApplicationQA() {}
+	public TemplateQuestion() {}
 
-	public ApplicationQA(Integer id, String question, String answer) {
+	public TemplateQuestion(Integer id, String question) {
 		super();
 		this.id = id;
 		this.question = question;
-		this.answer = answer;
 	}
 
 	public Integer getId() {
@@ -42,13 +38,5 @@ public class ApplicationQA {
 
 	public void setQuestion(String question) {
 		this.question = question;
-	}
-
-	public String getAnswer() {
-		return answer;
-	}
-
-	public void setAnswer(String answer) {
-		this.answer = answer;
 	}
 }
