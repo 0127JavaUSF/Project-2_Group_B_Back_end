@@ -17,5 +17,5 @@ public interface ListingDao extends JpaRepository<Listing, Integer>{
 	
 	Page<Listing> findByCityContainingIgnoreCase(String city, Pageable pageable);
 	
-	List<Listing> findAllByUserId(Integer userId);
+	List<Listing> findAllByUser(Integer user);
 }
