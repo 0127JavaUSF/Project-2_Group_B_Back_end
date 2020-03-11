@@ -13,12 +13,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.revature.dao.FoodDao;
 import com.revature.dao.ListingDao;
 import com.revature.model.Food;
 import com.revature.model.Listing;
+import com.revature.model.User;
 
 @Controller
 @CrossOrigin(origins="http://localhost:4200") 
@@ -62,6 +64,18 @@ public class FoodController {
 			return null;
 		
 		return res.get();
+	}
+	// call function I just made.
+	// return a list using findbyuserid.
+	// getting all the listings that match the userId (all the listings made by the same user).
+	@GetMapping(value="/listing/find-by-user.app", produces="application/json")
+	public @ResponseBody List<Listing> findAllByUser() {
+		User user = new User();
+		user.setId(1); //test.getuserfromsession
+		
+		List<Listing> listings =  listingDao.findAllByUser(user);
+
+		return listings;
 	}
 	
 	@GetMapping(value="/listing/search.app", produces="application/json", params= {"page", "type", "city"})

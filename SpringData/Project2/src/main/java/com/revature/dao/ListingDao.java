@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.revature.model.Listing;
+import com.revature.model.User;
 
 public interface ListingDao extends JpaRepository<Listing, Integer>{
 
@@ -16,4 +17,8 @@ public interface ListingDao extends JpaRepository<Listing, Integer>{
 	Page<Listing> findByType(Integer type, Pageable pageable);
 	
 	Page<Listing> findByCity(String city, Pageable pageable);
+	
+	List<Listing> findAllByUser(User user);	
+	
+	//create for user
 }
