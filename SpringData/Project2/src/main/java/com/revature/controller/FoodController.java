@@ -22,9 +22,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.revature.dao.FoodDao;
 import com.revature.dao.ListingDao;
 import com.revature.dao.TemplateDao;
+import com.revature.dao.UserDao;
 import com.revature.model.Food;
 import com.revature.model.Listing;
 import com.revature.model.Template;
+import com.revature.model.User;
 
 @Controller
 @CrossOrigin(origins="http://localhost:4200") 
@@ -39,9 +41,17 @@ public class FoodController {
 	@Autowired
 	private TemplateDao templateDao;
 
+	@Autowired
+	private UserDao userDao;
+
 	@GetMapping("/food.app")
 	public @ResponseBody Food findFood() {
 		return foodDao.findByFoodId(1);
+	}
+	
+	@PostMapping("/user.app")
+	public @ResponseBody User findUser() {
+		return userDao.findByUsername("henry");
 	}
 
 	//to change page size:
