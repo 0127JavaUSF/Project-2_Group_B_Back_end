@@ -1,7 +1,7 @@
 package com.revature.controller;
 
-import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,11 +23,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.HttpClientErrorException;
 
-import com.revature.dao.FoodDao;
+import com.revature.dao.ApplicationDao;
 import com.revature.dao.ListingDao;
 import com.revature.dao.TemplateDao;
 import com.revature.dao.UserDao;
+import com.revature.model.Application;
 import com.revature.model.Food;
 import com.revature.model.Listing;
 
@@ -37,10 +40,10 @@ import com.revature.model.User;
 
 @Controller
 @CrossOrigin(origins="http://localhost:4200") 
-public class FoodController {
+public class P2Controller {
 
 	@Autowired
-	private FoodDao foodDao;
+	private ApplicationDao appDao;
 	
 	@Autowired
 	private ListingDao listingDao;
@@ -50,35 +53,6 @@ public class FoodController {
 
 	@Autowired
 	private UserDao userDao;
-
-	@GetMapping("/food.app")
-	public @ResponseBody Food findFood() {
-		return foodDao.findByFoodId(1);
-	}
-	
-	@PostMapping("/user.app")
-	public @ResponseBody User findUser() {
-		return userDao.findByUsername("henry");
-	}
-
-	//to change page size:
-	//url?size=5&page=2 //5 per page, on page 2
-	@GetMapping("/allfood.app")
-	public @ResponseBody Page<Food> findAllFood(Pageable pageable) {
-		return foodDao.findAll(pageable);
-	}
-
-	// @PostMapping("/employees")
-	// public Employee createEmployee(@RequestBody Employee employee){
-	// return employeeRepo.save(employee);
-	// }
-
-	@GetMapping("/insert.app")
-	public @ResponseBody Food insert() {
-
-		Food food = new Food(0, "double cheeseburger", true);
-		return foodDao.save(food);
-	}
 	
 	@GetMapping(value="/listing.app", produces="application/json", params= {"id"})
 	public @ResponseBody Listing findListingById(int id) {
@@ -140,12 +114,62 @@ public class FoodController {
 				.body(createdTemplate);
 	}
 	
-	@GetMapping(value="/template.app", produces="application/json", params= {"listingId"})
-	public @ResponseBody Template findTemplateByListingId(int listingId) {
+	@GetMapping(value="/template.app", produces="application/json", params= {"listing_id"})
+	public @ResponseBody Template findTemplateByListingId(int listing_id) {
 		
 		Listing listing = new Listing();
-		listing.setId(listingId);
+		listing.setId(listing_id);
 				
-		return templateDao.findByListing(listing);
+		Template template = templateDao.findByListing(listing);
+		template.setUser(null); //do not return user
+		
+		return template;
+	}
+	
+	@PostMapping(value="/application/create.app", consumes = "application/json", produces = "application/json")
+	public ResponseEntity<Application> createApplication(@RequestBody @Valid Application app) {
+		
+		//test
+		app.setUser(new User());
+		app.getUser().setId(1);
+		
+		Timestamp ts = new Timestamp(Instant.now().toEpochMilli());
+		app.setDate(ts);
+	    		
+		Application createdApp = appDao.save(app);
+		
+		createdApp.setUser(null); //do not return user
+		
+		return ResponseEntity
+				.status(201)
+				.body(createdApp);
+	}
+	
+	@GetMapping(value="/application/by-listing.app", produces="application/json", params= {"listing_id"})
+	public @ResponseBody List<Application> findAllApplicationsByListing(int listing_id) {
+		
+		Listing listing = new Listing();
+		listing.setId(listing_id);
+		
+		Template template = templateDao.findByListing(listing);
+		if(template == null)
+			return null;
+		
+		int userId = 1; //test
+		
+		//if user who is logged in is different that user who created the listing and template
+		if(template.getListing().getUser().getId() != userId) {
+			
+			throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+		}
+		
+		List<Application> applications = appDao.findAllByTemplate(template);
+		
+		for(Application app : applications) {
+			
+			app.setDateString( new SimpleDateFormat("MM/dd/yyyy").format(app.getDate()) );
+		}
+				
+		return applications;
 	}
 }

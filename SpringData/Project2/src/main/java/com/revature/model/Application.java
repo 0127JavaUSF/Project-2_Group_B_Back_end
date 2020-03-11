@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 @Entity
 public class Application {
@@ -27,7 +28,10 @@ public class Application {
 	
 	@Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private Timestamp date;
-	
+
+	@Transient
+	private String dateString;
+
 //	@ManyToMany
 //	@JoinTable(name="applicants", joinColumns = { @JoinColumn(name="application_id")},
 //	inverseJoinColumns = { @JoinColumn(name="user_id") })	
@@ -116,6 +120,14 @@ public class Application {
 
 	public void setDate(Timestamp date) {
 		this.date = date;
+	}
+
+	public String getDateString() {
+		return dateString;
+	}
+
+	public void setDateString(String dateString) {
+		this.dateString = dateString;
 	}
 
 	public String getFirstName() {
