@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.revature.model.Listing;
 import com.revature.model.User;
 
-public interface ListingDao extends JpaRepository<Listing, Integer>{
+public interface ListingRepository extends JpaRepository<Listing, Integer>{
 
 	//must follow specific Spring naming format
 	Page<Listing> findByTypeAndCityContainingIgnoreCase(Integer type, String city, Pageable pageable);
@@ -25,5 +25,7 @@ public interface ListingDao extends JpaRepository<Listing, Integer>{
 	Page<Listing> findByCityContainingIgnoreCase(String city, Pageable pageable);
 	
 	List<Listing> findAllByUserId(Integer userId);
+	
+	
 }
 

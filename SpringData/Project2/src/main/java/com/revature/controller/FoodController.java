@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.revature.dao.FoodDao;
-import com.revature.dao.ListingDao;
+import com.revature.dao.ListingRepository;
 import com.revature.dao.TemplateDao;
 import com.revature.dao.UserDao;
 import com.revature.model.Food;
@@ -43,7 +43,7 @@ public class FoodController {
 	private FoodDao foodDao;
 	
 	@Autowired
-	private ListingDao listingDao;
+	private ListingRepository listingDao;
 	
 	@Autowired
 	private TemplateDao templateDao;
