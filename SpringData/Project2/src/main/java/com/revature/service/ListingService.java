@@ -1,5 +1,7 @@
 package com.revature.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,10 +21,9 @@ public class ListingService {
 		return this.listingDao.save(listing);
 	}
 	
-	public Page<Listing> findListing(Pageable pageable){
-		return this.listingDao.findAll(pageable);
+	public List<Listing> findAllListing(){
+		return this.listingDao.findAll();
 	}
-
 	public Listing findById(int id) {
 		return listingDao.findById(id).orElseThrow(
 				() -> new HttpClientErrorException(HttpStatus.NOT_FOUND,"Listing with id "+id+" not found"));
