@@ -1,6 +1,6 @@
 package com.revature.controller;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,17 +26,16 @@ public class ListingController {
 	@Autowired
 	ListingService listingService;
 	
-	@GetMapping("/listing")
+	@GetMapping("/listing/**")
 	public @ResponseBody Listing  findListingById(Integer id) {
 		return listingService.findById(id);		
 	}
-	/*
-	@GetMapping("/listingAll")
-	public @ResponseBody Listing  findListingById(Integer id) {
-		return listingService.find;		
-	}
-	*/
 	
+	@GetMapping("/listingAll")
+	public @ResponseBody List<Listing>  findAllLists() {
+		return listingService.findAllListing();		
+	}
+		
 	@GetMapping("/test/**")
 	public String handleGet() {
 		return "Success!";
