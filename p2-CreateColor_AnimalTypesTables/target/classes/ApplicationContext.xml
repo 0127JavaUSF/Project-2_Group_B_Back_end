@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+	<context:annotation-config />
+	<context:component-scan
+		base-package="com.example.repository" />
+
+	<tx:annotation-driven />
+
+	<!-- 3 Beans we need to set up Hibernate with Spring ORM are: "dataSource" 
+		- will contain your db location and credentials (url, username, password, 
+		jdbc driver) "sessionFactory" - takes your dataSource bean as a dependency. 
+		It also contains the configurations that would normally go into hibernate.cfg.xml 
+		"TransactionManager" - takes your sessionFactory bean as a dependency. -->
+
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName"
+			value="org.postgresql.Driver" />
+		<!--  <property name="url" 
+			value="jdbc:postgresql://localhost:5432/postgres" /> --> 
+		<property name="url"
+			value="jdbc:postgresql://project-2-group-b.cnnny8fet7ov.us-east-2.rds.amazonaws.com:5432/postgres" /> 
+		<!--<property name="url" value="${P2_H_URL}" />  -->
+		<property name="username" value="postgresp2" />
+		<property name="password" value="password" /> 
+	</bean>
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="packagesToScan" value="com.example.model" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<!-- possible other options are: update, validate, create-drop(drop the 
+					schema when the SessionFactory is closed explicitly, typically when the application 
+					is stopped), none -->
+			</props>
+		</property>
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+</beans>

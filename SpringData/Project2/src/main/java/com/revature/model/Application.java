@@ -1,7 +1,7 @@
 package com.revature.model;
 
-import java.time.LocalDate;
-import java.util.List;
+import java.sql.Timestamp;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,7 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Transient;
 
 @Entity
 public class Application {
@@ -22,18 +22,20 @@ public class Application {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
 	
-	@Column(nullable=false)
-	//@NotNull
-	private LocalDate date;
-	
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="user_id", nullable=false)
-	private User user;
+	private User user; //this is the applicant
 	
-	//qa is a list of the custom questions and answers on the application
-	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
-	@JoinColumn(name="app_id", nullable=false)
-	private List<ApplicationQA> qa;
+	@Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+	private Timestamp date;
+
+	@Transient
+	private String dateString;
+
+//	@ManyToMany
+//	@JoinTable(name="applicants", joinColumns = { @JoinColumn(name="application_id")},
+//	inverseJoinColumns = { @JoinColumn(name="user_id") })	
+//	private List<User> applicants;
 	
 	@Column(nullable=false)
     private String firstName;
@@ -56,24 +58,34 @@ public class Application {
 	@Column
     private String state;
 	
+	@Column
+    private String zipCode;
+
+	//application template that contains the custom questions
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="template_id", nullable=false)
+	private Template template;
+
+	//qa is a list of the custom questions and answers on the application
+	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name="app_id", nullable=false)
+	private Set<ApplicationAnswer> answers;
+	
 	//0 is not viewed, 1 is viewed
 	//default is not viewed
 	@Column(columnDefinition = "int default 0")
     private Integer status;
 	
-	@Column
-    private String zipCode;
-	
 	public Application() {}
 	
 
-	public Application(Integer id, LocalDate date, User user, List<ApplicationQA> qa, String firstName, String lastName,
-			String email, String phone, String address, String city, String state, Integer status, String zipCode) {
+	public Application(Integer id, User user, Timestamp date, String firstName, String lastName,
+			String email, String phone, String address, String city, String state, String zipCode, Template template,
+			Set<ApplicationAnswer> answers, Integer status) {
 		super();
 		this.id = id;
-		this.date = date;
 		this.user = user;
-		this.qa = qa;
+		this.date = date;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
@@ -81,8 +93,10 @@ public class Application {
 		this.address = address;
 		this.city = city;
 		this.state = state;
-		this.status = status;
 		this.zipCode = zipCode;
+		this.template = template;
+		this.answers = answers;
+		this.status = status;
 	}
 
 	public Integer getId() {
@@ -93,14 +107,6 @@ public class Application {
 		this.id = id;
 	}
 	
-	public LocalDate getDate() {
-		return date;
-	}
-
-	public void setDate(LocalDate date) {
-		this.date = date;
-	}
-
 	public User getUser() {
 		return user;
 	}
@@ -109,12 +115,20 @@ public class Application {
 		this.user = user;
 	}
 
-	public List<ApplicationQA> getQa() {
-		return qa;
+	public Timestamp getDate() {
+		return date;
 	}
 
-	public void setQa(List<ApplicationQA> qa) {
-		this.qa = qa;
+	public void setDate(Timestamp date) {
+		this.date = date;
+	}
+
+	public String getDateString() {
+		return dateString;
+	}
+
+	public void setDateString(String dateString) {
+		this.dateString = dateString;
 	}
 
 	public String getFirstName() {
@@ -173,20 +187,32 @@ public class Application {
 		this.state = state;
 	}
 
-	public int getStatus() {
-		return status;
-	}
-
-	public void setStatus(int status) {
-		this.status = status;
-	}
-
 	public String getZipCode() {
 		return zipCode;
 	}
 
 	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
+	}
+
+	public Template getTemplate() {
+		return template;
+	}
+
+	public void setTemplate(Template template) {
+		this.template = template;
+	}
+
+	public Set<ApplicationAnswer> getAnswers() {
+		return answers;
+	}
+
+	public void setAnswers(Set<ApplicationAnswer> answers) {
+		this.answers = answers;
+	}
+
+	public Integer getStatus() {
+		return status;
 	}
 
 	public void setStatus(Integer status) {
