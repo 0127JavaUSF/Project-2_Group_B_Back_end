@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.revature.controller", "com.revature.dao", "com.revature.model"})
+@ComponentScan(basePackages = {"com.revature.controller", "com.revature.dao", "com.revature.model","com.revature.service"})
 @EntityScan("com.revature.*")
 
 public class MainDriver {
