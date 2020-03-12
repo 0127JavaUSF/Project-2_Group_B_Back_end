@@ -13,12 +13,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.revature.dao.ApplicationDao;
 import com.revature.dao.FoodDao;
 import com.revature.dao.ListingDao;
+import com.revature.dao.UserDao;
+import com.revature.model.Application;
 import com.revature.model.Food;
 import com.revature.model.Listing;
+import com.revature.model.User;
 
 @Controller
 @CrossOrigin(origins="http://localhost:4200") 
@@ -29,10 +34,22 @@ public class FoodController {
 	
 	@Autowired
 	private ListingDao listingDao;
+	
+	@Autowired
+	private UserDao userDao;
+	
+	@Autowired
+	private ApplicationDao applicationDao;
+	
 
 	@GetMapping("/food.app")
 	public @ResponseBody Food findFood() {
 		return foodDao.findByFoodId(1);
+	}
+	
+	@PostMapping("/user.app")
+	public @ResponseBody User findUser() {
+		return userDao.findByUsername("henry");
 	}
 
 	//to change page size:
@@ -82,5 +99,13 @@ public class FoodController {
 		else {
 			return listingDao.findAll(pageable);
 		}
+	}
+
+	@GetMapping(value="/application/by-user.app", produces="application/json")
+	public @ResponseBody List<Application> findByUser() {
+		User user = new User();
+		user.setId(1);
+		//test getUserFromSession
+		return applicationDao.findByUser(user);
 	}
 }

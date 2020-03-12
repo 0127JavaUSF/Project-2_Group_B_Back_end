@@ -26,7 +26,7 @@ public class Application {
 	//@NotNull
 	private LocalDate date;
 	
-	@ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="user_id", nullable=false)
 	private User user;
 	
@@ -65,6 +65,7 @@ public class Application {
     private String zipCode;
 	
 	public Application() {}
+	
 
 	public Application(Integer id, LocalDate date, User user, List<ApplicationQA> qa, String firstName, String lastName,
 			String email, String phone, String address, String city, String state, Integer status, String zipCode) {
