@@ -172,4 +172,22 @@ public class P2Controller {
 				
 		return applications;
 	}
+	
+	@GetMapping(value="/application/by-user.app", produces="application/json")
+	public @ResponseBody List<Application> findByUser() {
+		User user = new User();
+		user.setId(1);
+		//test getUserFromSession
+		List<Application> apps = appDao.findAllByUser(user);
+		for(Application app : apps) {
+			app.setUser(null); //do not send user back to client
+			if(app.getTemplate() != null) {
+				app.getTemplate().setUser(null);
+				if(app.getTemplate().getListing() != null) {
+					app.getTemplate().getListing().setUser(null);
+				}
+			}
+		}
+		return apps;
+	}
 }

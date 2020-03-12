@@ -62,7 +62,7 @@ public class Application {
     private String zipCode;
 
 	//application template that contains the custom questions
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="template_id", nullable=false)
 	private Template template;
 
@@ -77,6 +77,7 @@ public class Application {
     private Integer status;
 	
 	public Application() {}
+	
 
 	public Application(Integer id, User user, Timestamp date, String firstName, String lastName,
 			String email, String phone, String address, String city, String state, String zipCode, Template template,
