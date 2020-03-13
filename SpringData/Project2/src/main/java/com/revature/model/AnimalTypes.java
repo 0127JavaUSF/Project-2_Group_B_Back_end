@@ -59,9 +59,4 @@ public class AnimalTypes {
 		//NB: AnimalType constructor: calling the parent constructor
 		this.typeName = typeName;
 	}
-	
-	
-	
-	
-
 }

@@ -15,14 +15,17 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
+@JsonIgnoreProperties({"user"}) //do not return user to client
 public class Application {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
 	
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="user_id", nullable=false)
 	private User user; //this is the applicant
 	
@@ -62,11 +65,12 @@ public class Application {
     private String zipCode;
 
 	//application template that contains the custom questions
-	@ManyToOne(fetch=FetchType.EAGER)
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="template_id", nullable=false)
 	private Template template;
 
-	//qa is a list of the custom questions and answers on the application
+	//list of the custom questions and answers on the application
 	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	@JoinColumn(name="app_id", nullable=false)
 	private Set<ApplicationAnswer> answers;

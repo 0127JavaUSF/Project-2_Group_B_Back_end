@@ -1,6 +1,6 @@
 package com.revature.dao;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
