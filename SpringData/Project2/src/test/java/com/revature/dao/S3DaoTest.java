@@ -15,10 +15,10 @@ class S3DaoTest {
 	}
 
 	 @Test 
-	 public void setReceiptTest () { assertTrue(dao.setReceipt("reimbId_UserId.jpg")==1); }
+	 public void setReceiptTest () { assertTrue(dao.setFileInS3("reimbId_UserId.jpg")==1); }
 	 
 	@Test
-	public void getFileFromS3Test() {assertTrue(dao.getReceipt("reimbId_UserId.jpg")==1);}	
+	public void getFileFromS3Test() {assertTrue(dao.getFileFromS3("reimbId_UserId.jpg")==1);}	
 	  
 
 }
