@@ -18,26 +18,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-
-
 import org.springframework.web.bind.annotation.RequestBody;
-
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.HttpClientErrorException;
 
-import com.revature.dao.FoodDao;
-import com.revature.dao.ListingRepository;
 import com.revature.dao.ApplicationDao;
-import com.revature.dao.ListingDao;
+import com.revature.dao.ListingRepository;
 import com.revature.dao.TemplateDao;
 import com.revature.dao.UserDao;
 import com.revature.model.Application;
-import com.revature.model.Food;
 import com.revature.model.Listing;
-
-
 import com.revature.model.Template;
-
 import com.revature.model.User;
 
 @Controller

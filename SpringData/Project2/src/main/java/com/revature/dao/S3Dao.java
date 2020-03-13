@@ -2,6 +2,8 @@ package com.revature.dao;
 
 import java.io.File;
 
+import org.apache.log4j.Logger;
+
 import com.amazonaws.SDKGlobalConfiguration;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -12,6 +14,8 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 
 public class S3Dao {
 	
+	Logger logger = Logger.getRootLogger();
+	
 	public int setFileInS3(String fileId) {
 		int status = -1;
 		
@@ -21,16 +25,14 @@ public class S3Dao {
 			AmazonS3 s3client = new AmazonS3Client(credentials);
 			String bucketName = "project2s3";
 			String uploadFolder = System.getProperty("user.dir")+"/src/main/resources/file_upload/";
+			logger.debug("uploadFolder: "+uploadFolder);
 			s3client.putObject(new PutObjectRequest(bucketName, fileId, new File(uploadFolder+fileId)));
 			status = 1;
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
-		finally {
-			
-			
-		}
+		
 		return status;
 }
 	
@@ -49,6 +51,7 @@ public class S3Dao {
 			AWSCredentials credentials = new BasicAWSCredentials(System.getenv("S3_KEY_ID"), System.getenv("S3_KEY_ACCESS"));
 			AmazonS3 s3client = new AmazonS3Client(credentials);
 			String bucketName = "project2s3";
+			logger.debug("uploadFolder: "+uploadFolder);
 			s3client.getObject(new GetObjectRequest(bucketName, fileId), new File(uploadFolder+fileId));
 			
 			status = 1;
