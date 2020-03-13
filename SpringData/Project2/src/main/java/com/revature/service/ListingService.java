@@ -9,13 +9,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
-import com.revature.dao.ListingDao;
+import com.revature.dao.ListingRepository;
 import com.revature.model.Listing;
 
 @Service
 public class ListingService {
 	
-	private ListingDao listingDao;
+	private ListingRepository listingDao;
 	
 	public Listing create(Listing listing) {
 		return this.listingDao.save(listing);
@@ -30,8 +30,11 @@ public class ListingService {
 	}
 	
 	@Autowired
-	public ListingService (ListingDao listingDao) {
+	public ListingService (ListingRepository listingDao) {
 		super();
 		this.listingDao = listingDao;
 	}
+	
+	
+	
 }

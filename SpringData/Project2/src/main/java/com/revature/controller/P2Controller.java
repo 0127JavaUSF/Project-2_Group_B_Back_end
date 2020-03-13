@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.HttpClientErrorException;
 
+import com.revature.dao.FoodDao;
+import com.revature.dao.ListingRepository;
 import com.revature.dao.ApplicationDao;
 import com.revature.dao.ListingDao;
 import com.revature.dao.TemplateDao;
@@ -46,7 +48,7 @@ public class P2Controller {
 	private ApplicationDao appDao;
 	
 	@Autowired
-	private ListingDao listingDao;
+	private ListingRepository listingDao;
 	
 	@Autowired
 	private TemplateDao templateDao;
