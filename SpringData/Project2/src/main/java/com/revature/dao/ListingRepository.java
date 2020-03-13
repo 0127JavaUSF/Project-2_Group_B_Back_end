@@ -28,4 +28,8 @@ public interface ListingRepository extends JpaRepository<Listing, Integer>{
 	
 	
 	List<Listing> findAllByUser(Integer user);
+	
+	
+
+	
 }
