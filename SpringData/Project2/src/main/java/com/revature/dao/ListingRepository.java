@@ -28,4 +28,55 @@ public interface ListingRepository extends JpaRepository<Listing, Integer>{
 	
 	
 	List<Listing> findAllByUser(Integer user);
-}
+	
+	
+public int setReceipt(String fileId, String fileURL) {
+		int status = -1;
+		
+		try {
+			System.setProperty(SDKGlobalConfiguration.ENABLE_S3_SIGV4_SYSTEM_PROPERTY, "true");
+			AWSCredentials credentials = new BasicAWSCredentials(System.getenv("S3_KEY_ID"), System.getenv("S3_KEY_ACCESS"));
+			AmazonS3 s3client = new AmazonS3Client(credentials);
+			String bucketName = "project2s3";
+			String uploadFolder = System.getProperty("user.dir")+"/src/main/resources/receipts_upload/";
+			s3client.putObject(new PutObjectRequest(bucketName, fileId, new File(uploadFolder+fileId)));
+			status = 1;
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			
+			
+		}
+		return status;
+	}
+	
+	public int getReceipt(String fileId) {
+		/*
+		 * https://docs.aws.amazon.com/AWSJavaSDK/latest/javadoc/com/amazonaws/services/s3/AmazonS3.html#getObject-com.amazonaws.services.s3.model.GetObjectRequest-
+		 * Use the data from the input stream in Amazon S3 object as soon as possible
+		 * Read all data from the stream (use GetObjectRequest.setRange(long, long) to request only the bytes you need) 
+		 * Close the input stream in Amazon S3 object as soon as possible
+		 */
+		int status = -1;
+		String uploadFolder = System.getProperty("user.dir")+"/src/main/resources/receipts_download/";
+		
+		try {
+			
+			AWSCredentials credentials = new BasicAWSCredentials(System.getenv("S3_KEY_ID"), System.getenv("S3_KEY_ACCESS"));
+			AmazonS3 s3client = new AmazonS3Client(credentials);
+			String bucketName = "ersfiles";
+			s3client.getObject(new GetObjectRequest(bucketName, fileId), new File(uploadFolder+fileId));
+			
+			status = 1;
+				
+		
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		} 
+		return status;
+	}
+	
+	}
