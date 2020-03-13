@@ -18,6 +18,8 @@ class S3DaoTest {
 	 
 	@Test
 	public void getFileFromS3Test() {assertTrue(dao.getFileFromS3("AustralianCattleDog_JimHutchins.jpg")==1);}	
-	  
-
+	 
+	@Test
+	public void getPresignedURLTest() {assertNotEquals(dao.getPresignedURL("AustralianCattleDog_JimHutchins.jpg"),null);}
+	
 }

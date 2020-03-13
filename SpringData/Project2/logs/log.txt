@@ -3,3 +3,6 @@
 2020-03-12 12:32:01 INFO  ListingController:46 - Request mapped with HandleGet
 2020-03-12 22:32:00 DEBUG S3Dao:54 - uploadFolder: C:\_Revature\Projects\Project 2\Project2_Group_B_Back_end\SpringData\Project2/src/main/resources/file_download/
 2020-03-12 22:32:01 DEBUG S3Dao:28 - uploadFolder: C:\_Revature\Projects\Project 2\Project2_Group_B_Back_end\SpringData\Project2/src/main/resources/file_upload/
+2020-03-13 12:57:49 DEBUG S3Dao:76 - uploadFolder: C:\_Revature\Projects\Project 2\Project2_Group_B_Back_end\SpringData\Project2/src/main/resources/file_download/
+2020-03-13 12:57:51 DEBUG S3Dao:56 - PresignedURL: https://project2s3.s3.amazonaws.com/AustralianCattleDog_JimHutchins.jpg?AWSAccessKeyId=AKIAZSEZOSQEBNWXWUMR&Expires=1584205071&Signature=hqbn4e59N5CEpSqNe5zQwIA7WqE%3D
+2020-03-13 12:57:51 DEBUG S3Dao:32 - uploadFolder: C:\_Revature\Projects\Project 2\Project2_Group_B_Back_end\SpringData\Project2/src/main/resources/file_upload/
