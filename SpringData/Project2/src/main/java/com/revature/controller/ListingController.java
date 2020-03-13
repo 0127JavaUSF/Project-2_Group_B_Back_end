@@ -3,6 +3,9 @@ package com.revature.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,24 +13,33 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 //TODO Modify localhost
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
 
 import com.revature.dao.ListingDao;
 import com.revature.model.Listing;
 import com.revature.model.User;
+import com.revature.service.ListingService;
 import com.revature.service.UserService;
+
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 public class ListingController {
-	
+			
 	private ListingDao listingDao;
 	
+	private ListingService listingService;
+	
+	private Logger logger = Logger.getRootLogger();
+
 	public ListingController() {}
 	
 	@Autowired
@@ -35,16 +47,6 @@ public class ListingController {
 		super();
 		this.listingDao = listingDao;
 	}
-
-//	@GetMapping("/api/v1/listing.app")
-//	public @ResponseBody Optional<Listing>  findListingById(Integer id) {
-//		return listingDao.findById(id);		
-//	}
-//	
-//	@PostMapping("/api/v1/application")
-//	public Listing createApplication(@RequestBody Listing listing) {
-//		return listingDao.save(listing);
-//	}
 
 	@GetMapping(value="/listing.app", produces="application/json", params= {"id"})
 	public Listing findListingById(int id) {
@@ -95,4 +97,44 @@ public class ListingController {
 			return listingDao.findAll(pageable);
 		}
 	}
+	
+	@PostMapping(value="/listing/create.app", consumes = "application/json", produces = "application/json")
+	public ResponseEntity<Listing> createListing(@RequestBody @Valid Listing listing) {
+		
+		return ResponseEntity
+				.status(201)
+				.body(listingService.create(listing));
+	}
+	
+	//JL test methods
+//	@GetMapping("/listing/{id}")
+//	public @ResponseBody Listing  findListingById(@PathVariable Integer id) {
+//		logger.debug("@PathVariable Integer id: "+id);
+//		return listingService.findById(id);		
+//	}
+//	
+//	@GetMapping("/listingAll")
+//	public @ResponseBody List<Listing>  findAllLists() {
+//		return listingService.findAllListing();		
+//	}
+//		
+//	@ExceptionHandler(HttpClientErrorException.class)
+//	public ResponseEntity<String> handleClientError(HttpClientErrorException e) {
+//		return ResponseEntity
+//				.status(e.getStatusCode())
+//				.body(String.format("{\"message\": \"%s\"}", e.getMessage()));
+//	}
+//	
+//	@PostMapping("/newlisting")
+//	@ResponseStatus(HttpStatus.CREATED)
+//	public Listing create(@RequestBody Listing listing) {
+//		return listingService.create(listing);
+//	}
+//	
+//	/* Used to test: successful */
+//	@GetMapping("/test/**")
+//	public String handleGet() {
+//		logger.info("Request mapped with HandleGet");
+//		return "Success!";
+//	}
 }

@@ -13,4 +13,5 @@ public interface ApplicationDao extends JpaRepository<Application, Integer>{
 	List<Application> findAllByTemplate(Template template);
 	
 	List<Application> findAllByUser(User user);
+
 }

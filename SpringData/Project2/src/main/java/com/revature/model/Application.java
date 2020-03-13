@@ -81,6 +81,7 @@ public class Application {
     private Integer status;
 	
 	public Application() {}
+	
 
 	public Application(Integer id, User user, Timestamp date, String firstName, String lastName,
 			String email, String phone, String address, String city, String state, String zipCode, Template template,

@@ -1,0 +1,5 @@
+2020-03-12 11:05:00 INFO  ListingController:46 - Request mapped with HandleGet
+2020-03-12 11:09:12 DEBUG ListingController:35 - @PathVariable Integer id: 1
+2020-03-12 12:32:01 INFO  ListingController:46 - Request mapped with HandleGet
+2020-03-12 22:32:00 DEBUG S3Dao:54 - uploadFolder: C:\_Revature\Projects\Project 2\Project2_Group_B_Back_end\SpringData\Project2/src/main/resources/file_download/
+2020-03-12 22:32:01 DEBUG S3Dao:28 - uploadFolder: C:\_Revature\Projects\Project 2\Project2_Group_B_Back_end\SpringData\Project2/src/main/resources/file_upload/

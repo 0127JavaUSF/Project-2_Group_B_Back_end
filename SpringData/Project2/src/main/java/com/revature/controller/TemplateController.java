@@ -1,20 +1,12 @@
 package com.revature.controller;
 
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,20 +14,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException;
 
-import com.revature.dao.ApplicationDao;
-import com.revature.dao.ListingDao;
 import com.revature.dao.TemplateDao;
-import com.revature.dao.UserDao;
-import com.revature.model.Application;
 import com.revature.model.Listing;
 import com.revature.model.Template;
 import com.revature.model.User;
 import com.revature.service.UserService;
-
-import at.favre.lib.crypto.bcrypt.BCrypt;
-import at.favre.lib.crypto.bcrypt.BCrypt.Verifyer;
 
 @CrossOrigin(origins="http://localhost:4200")
 @RestController

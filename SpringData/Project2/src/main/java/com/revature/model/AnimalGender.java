@@ -50,9 +50,4 @@ public class AnimalGender {
 		super();		
 		this.genderName = genderName;
 	}
-	
-	
-	
-	
-
 }
