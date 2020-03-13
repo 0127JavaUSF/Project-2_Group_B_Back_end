@@ -1,5 +1,6 @@
 package com.revature.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 
 import com.revature.dao.ListingDao;
+import com.revature.model.Application;
 import com.revature.model.Listing;
 import com.revature.model.User;
 import com.revature.service.ListingService;
@@ -72,6 +74,11 @@ public class ListingController {
 		user.setId(userId);
 		
 		List<Listing> listings =  listingDao.findAllByUser(user);
+		
+		for(Listing list : listings) {
+			
+			list.setDateString( new SimpleDateFormat("MM/dd/yyyy").format(list.getDate()) );
+		}
 
 		return ResponseEntity
 				.status(200)
@@ -99,11 +106,28 @@ public class ListingController {
 	}
 	
 	@PostMapping(value="/listing/create.app", consumes = "application/json", produces = "application/json")
-	public ResponseEntity<Listing> createListing(@RequestBody @Valid Listing listing) {
+	public ResponseEntity<Listing> createListing(@RequestBody @Valid Listing listing, @CookieValue(value = "token", defaultValue = "") String token) {
+		
+		int userId = UserService.getUserIdFromJWT(token);
+		if(userId < 1) {
+			return ResponseEntity
+					.status(401)
+					.body(null);
+		}
+		
+		//userId on listing object can't be null
+		User user = new User();
+		user.setId(userId);
+		listing.setUser(user);
 		
 		return ResponseEntity
 				.status(201)
-				.body(listingService.create(listing));
+				.body(listingDao.save(listing));
+		
+		//for some reason listingService is null and the bean does not inject
+//		return ResponseEntity
+//				.status(201)
+//				.body(listingService.create(listing));
 	}
 	
 	//JL test methods

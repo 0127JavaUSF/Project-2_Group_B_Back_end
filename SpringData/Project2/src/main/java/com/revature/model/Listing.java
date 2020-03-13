@@ -1,6 +1,7 @@
 package com.revature.model;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -13,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -31,6 +33,9 @@ public class Listing {
 	@Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private Timestamp date;
 	
+	@Transient
+	private String dateString;
+	
 	@Column
     private String about;
 	@Column
@@ -45,6 +50,9 @@ public class Listing {
     @OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	@JoinColumn(name="listing_id")	
     private Set<ImageUrl> imageUrls;
+    
+    @Transient
+    private List<String> imagePresignedUrls;
     
     @Column
     private String name;
@@ -122,6 +130,14 @@ public class Listing {
 		this.date = date;
 	}
 
+	public String getDateString() {
+		return dateString;
+	}
+
+	public void setDateString(String dateString) {
+		this.dateString = dateString;
+	}
+
 	public String getAbout() {
 		return about;
 	}
@@ -168,6 +184,14 @@ public class Listing {
 
 	public void setImageUrls(Set<ImageUrl> imageUrls) {
 		this.imageUrls = imageUrls;
+	}
+
+	public List<String> getImagePresignedUrls() {
+		return imagePresignedUrls;
+	}
+
+	public void setImagePresignedUrls(List<String> imagePresignedUrls) {
+		this.imagePresignedUrls = imagePresignedUrls;
 	}
 
 	public String getName() {
