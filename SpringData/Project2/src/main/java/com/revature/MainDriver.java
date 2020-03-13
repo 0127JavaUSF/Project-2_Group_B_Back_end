@@ -13,5 +13,9 @@ public class MainDriver {
 
 	public static void main(String[] args) {
 		SpringApplication.run(MainDriver.class, args);
+
+		//test generating hash
+//		String hash = UserService.hashPassword("password");
+//		System.out.println(hash);
 	}
 }

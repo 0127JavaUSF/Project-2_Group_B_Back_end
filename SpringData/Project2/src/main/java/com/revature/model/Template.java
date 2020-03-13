@@ -15,25 +15,29 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
+@JsonIgnoreProperties({"user"}) //do not return user to client
 public class Template {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
 	
-	@OneToOne(fetch=FetchType.EAGER)
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="listing_id", nullable=false)
 	private Listing listing; //listing
 	
 	@Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private Timestamp date;
 	
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="user_id", nullable=false)
 	private User user; //this is the pet owner who is rehoming
 	
-	//qa is a list of the custom questions on the application
+	//custom questions on the application
 	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	@JoinColumn(name="template_id", nullable=false)
 	private Set<TemplateQuestion> questions;
