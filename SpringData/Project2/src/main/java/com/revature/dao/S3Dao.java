@@ -26,14 +26,13 @@ public class S3Dao {
 		int status = -1;
 
 		try {
-			System.setProperty(SDKGlobalConfiguration.ENABLE_S3_SIGV4_SYSTEM_PROPERTY, "true");
-			AWSCredentials credentials = new BasicAWSCredentials(System.getenv("S3_KEY_ID"),
-					System.getenv("S3_KEY_ACCESS"));
+			System.setProperty(SDKGlobalConfiguration.ENABLE_S3_SIGV4_SYSTEM_PROPERTY, "true"); //$NON-NLS-1$
+			AWSCredentials credentials = new BasicAWSCredentials(System.getenv("S3_KEY_ID"), System.getenv("S3_KEY_ACCESS")); //$NON-NLS-1$ //$NON-NLS-2$
 			AmazonS3 s3client = new AmazonS3Client(credentials);
-			String bucketName = "project2s3";
-			String uploadFolder = System.getProperty("user.dir") + "/src/main/resources/file_upload/";
-			logger.debug("uploadFolder: " + uploadFolder);
-			s3client.putObject(new PutObjectRequest(bucketName, fileId, new File(uploadFolder + fileId)));
+			String bucketName = Messages.getString("S3Dao.0"); //$NON-NLS-1$
+			String uploadFolder = System.getProperty("user.dir")+"/src/main/resources/file_upload/"; //$NON-NLS-1$ //$NON-NLS-2$
+			logger.debug("uploadFolder: "+uploadFolder); //$NON-NLS-1$
+			s3client.putObject(new PutObjectRequest(bucketName, fileId, new File(uploadFolder+fileId)));
 			status = 1;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -44,10 +43,10 @@ public class S3Dao {
 
 	public URL getPresignedURL(String fileId) {
 		URL presignedURL;
-		AWSCredentials credentials = new BasicAWSCredentials(System.getenv("S3_KEY_ID"),
-				System.getenv("S3_KEY_ACCESS"));
+
+		AWSCredentials credentials = new BasicAWSCredentials(System.getenv("S3_KEY_ID"), System.getenv("S3_KEY_ACCESS")); //$NON-NLS-1$ //$NON-NLS-2$
 		AmazonS3 s3client = new AmazonS3Client(credentials);
-		String bucketName = "project2s3";
+		String bucketName = Messages.getString("S3Dao.0"); //$NON-NLS-1$
 		String objectKey = fileId;
 		Date expiration = new Date();
 		long expTimeMilliseconds = expiration.getTime();
@@ -55,9 +54,10 @@ public class S3Dao {
 		//we can not make it 24 hours for security reasons
 //		expTimeMilliseconds += 1000 * 60 * 60 * 24; // Setting the expiration time at 24h
 		GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucketName, objectKey)
-				.withMethod(HttpMethod.GET).withExpiration(new Date(expTimeMilliseconds));
-		presignedURL = s3client.generatePresignedUrl(generatePresignedUrlRequest);
-		logger.debug("PresignedURL: " + presignedURL.toString());
+                        .withMethod(HttpMethod.GET)
+                        .withExpiration(new Date(expTimeMilliseconds));
+		presignedURL = s3client.generatePresignedUrl(generatePresignedUrlRequest);		
+		logger.debug("PresignedURL: "+presignedURL.toString()); //$NON-NLS-1$
 		return presignedURL;
 	}
 
@@ -71,17 +71,16 @@ public class S3Dao {
 		 * as soon as possible
 		 */
 		int status = -1;
-		String uploadFolder = System.getProperty("user.dir") + "/src/main/resources/file_download/";
-
+		String uploadFolder = System.getProperty("user.dir")+"/src/main/resources/file_download/"; //$NON-NLS-1$ //$NON-NLS-2$
+		
 		try {
-
-			AWSCredentials credentials = new BasicAWSCredentials(System.getenv("S3_KEY_ID"),
-					System.getenv("S3_KEY_ACCESS"));
+			
+			AWSCredentials credentials = new BasicAWSCredentials(System.getenv("S3_KEY_ID"), System.getenv("S3_KEY_ACCESS")); //$NON-NLS-1$ //$NON-NLS-2$
 			AmazonS3 s3client = new AmazonS3Client(credentials);
-			String bucketName = "project2s3";
-			logger.debug("uploadFolder: " + uploadFolder);
-			s3client.getObject(new GetObjectRequest(bucketName, fileId), new File(uploadFolder + fileId));
-
+			String bucketName = Messages.getString("S3Dao.0"); //$NON-NLS-1$
+			logger.debug("uploadFolder: "+uploadFolder); //$NON-NLS-1$
+			s3client.getObject(new GetObjectRequest(bucketName, fileId), new File(uploadFolder+fileId));
+			
 			status = 1;
 
 		} catch (Exception e) {
