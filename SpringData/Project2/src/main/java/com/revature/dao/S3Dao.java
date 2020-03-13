@@ -29,7 +29,7 @@ public class S3Dao {
 			System.setProperty(SDKGlobalConfiguration.ENABLE_S3_SIGV4_SYSTEM_PROPERTY, "true"); //$NON-NLS-1$
 			AWSCredentials credentials = new BasicAWSCredentials(System.getenv("S3_KEY_ID"), System.getenv("S3_KEY_ACCESS")); //$NON-NLS-1$ //$NON-NLS-2$
 			AmazonS3 s3client = new AmazonS3Client(credentials);
-			String bucketName = Messages.getString("S3Dao.0"); //$NON-NLS-1$
+			String bucketName = System.getenv("S3_Bucket");
 			String uploadFolder = System.getProperty("user.dir")+"/src/main/resources/file_upload/"; //$NON-NLS-1$ //$NON-NLS-2$
 			logger.debug("uploadFolder: "+uploadFolder); //$NON-NLS-1$
 			s3client.putObject(new PutObjectRequest(bucketName, fileId, new File(uploadFolder+fileId)));
@@ -46,7 +46,7 @@ public class S3Dao {
 
 		AWSCredentials credentials = new BasicAWSCredentials(System.getenv("S3_KEY_ID"), System.getenv("S3_KEY_ACCESS")); //$NON-NLS-1$ //$NON-NLS-2$
 		AmazonS3 s3client = new AmazonS3Client(credentials);
-		String bucketName = Messages.getString("S3Dao.0"); //$NON-NLS-1$
+		String bucketName = System.getenv("S3_Bucket"); 
 		String objectKey = fileId;
 		Date expiration = new Date();
 		long expTimeMilliseconds = expiration.getTime();
@@ -77,7 +77,7 @@ public class S3Dao {
 			
 			AWSCredentials credentials = new BasicAWSCredentials(System.getenv("S3_KEY_ID"), System.getenv("S3_KEY_ACCESS")); //$NON-NLS-1$ //$NON-NLS-2$
 			AmazonS3 s3client = new AmazonS3Client(credentials);
-			String bucketName = Messages.getString("S3Dao.0"); //$NON-NLS-1$
+			String bucketName = System.getenv("S3_Bucket");
 			logger.debug("uploadFolder: "+uploadFolder); //$NON-NLS-1$
 			s3client.getObject(new GetObjectRequest(bucketName, fileId), new File(uploadFolder+fileId));
 			

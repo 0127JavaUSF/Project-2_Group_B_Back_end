@@ -6,3 +6,9 @@
 2020-03-13 12:57:49 DEBUG S3Dao:76 - uploadFolder: C:\_Revature\Projects\Project 2\Project2_Group_B_Back_end\SpringData\Project2/src/main/resources/file_download/
 2020-03-13 12:57:51 DEBUG S3Dao:56 - PresignedURL: https://project2s3.s3.amazonaws.com/AustralianCattleDog_JimHutchins.jpg?AWSAccessKeyId=AKIAZSEZOSQEBNWXWUMR&Expires=1584205071&Signature=hqbn4e59N5CEpSqNe5zQwIA7WqE%3D
 2020-03-13 12:57:51 DEBUG S3Dao:32 - uploadFolder: C:\_Revature\Projects\Project 2\Project2_Group_B_Back_end\SpringData\Project2/src/main/resources/file_upload/
+2020-03-13 14:32:50 DEBUG S3Dao:76 - uploadFolder: C:\_Revature\Projects\Project 2\Project2_Group_B_Back_end\SpringData\Project2/src/main/resources/file_download/
+2020-03-13 14:32:52 DEBUG S3Dao:56 - PresignedURL: https://s3.amazonaws.com/%21S3_Bucket%21/AustralianCattleDog_JimHutchins.jpg?AWSAccessKeyId=AKIAZSEZOSQEBNWXWUMR&Expires=1584210772&Signature=pGpF09R2GASR8Lc2F%2F5nCBAZxow%3D
+2020-03-13 14:32:52 DEBUG S3Dao:32 - uploadFolder: C:\_Revature\Projects\Project 2\Project2_Group_B_Back_end\SpringData\Project2/src/main/resources/file_upload/
+2020-03-13 14:40:10 DEBUG S3Dao:76 - uploadFolder: C:\_Revature\Projects\Project 2\Project2_Group_B_Back_end\SpringData\Project2/src/main/resources/file_download/
+2020-03-13 14:40:11 DEBUG S3Dao:56 - PresignedURL: https://project2s3.s3.amazonaws.com/AustralianCattleDog_JimHutchins.jpg?AWSAccessKeyId=AKIAZSEZOSQEBNWXWUMR&Expires=1584211211&Signature=bZrA1%2BW81mPMNrNnousUR%2FCUgoE%3D
+2020-03-13 14:40:11 DEBUG S3Dao:32 - uploadFolder: C:\_Revature\Projects\Project 2\Project2_Group_B_Back_end\SpringData\Project2/src/main/resources/file_upload/
