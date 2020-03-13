@@ -27,5 +27,5 @@ public interface ListingRepository extends JpaRepository<Listing, Integer>{
 	List<Listing> findAllByUserId(Integer userId);
 	
 	
+	List<Listing> findAllByUser(Integer user);
 }
-
