@@ -12,7 +12,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 
 public class S3Dao {
 	
-	public int setFile(String fileId, String fileURL) {
+	public int setFileInS3(String fileId) {
 		int status = -1;
 		
 		try {
@@ -34,7 +34,7 @@ public class S3Dao {
 		return status;
 }
 	
-	public int getFile(String fileId) {
+	public int getFileFromS3(String fileId) {
 		/*
 		 * https://docs.aws.amazon.com/AWSJavaSDK/latest/javadoc/com/amazonaws/services/s3/AmazonS3.html#getObject-com.amazonaws.services.s3.model.GetObjectRequest-
 		 * Use the data from the input stream in Amazon S3 object as soon as possible
