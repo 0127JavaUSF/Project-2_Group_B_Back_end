@@ -1,5 +1,7 @@
 package com.revature.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,18 +15,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 //TODO Modify localhost
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException;
 
 import com.revature.dao.ListingDao;
+import com.revature.dao.S3Dao;
+import com.revature.model.ImageUrl;
 import com.revature.model.Listing;
 import com.revature.model.User;
 import com.revature.service.ListingService;
@@ -39,13 +38,17 @@ public class ListingController {
 	private ListingService listingService;
 	
 	private Logger logger = Logger.getRootLogger();
+	
+	private S3Dao s3;
 
 	public ListingController() {}
 	
 	@Autowired
-	public ListingController(ListingDao listingDao) {
+	public ListingController(ListingDao listingDao, ListingService listingService, S3Dao s3) {
 		super();
 		this.listingDao = listingDao;
+		this.listingService = listingService;
+		this.s3 = s3;
 	}
 
 	@GetMapping(value="/listing.app", produces="application/json", params= {"id"})
@@ -57,7 +60,7 @@ public class ListingController {
 		
 		return res.get();
 	}
-	
+
 	@GetMapping(value="/listing/find-by-user.app", produces="application/json")
 	public ResponseEntity<List<Listing>> findAllByUser(@CookieValue(value = "token", defaultValue = "") String token) {
 				
@@ -72,6 +75,11 @@ public class ListingController {
 		user.setId(userId);
 		
 		List<Listing> listings =  listingDao.findAllByUser(user);
+		
+		for(Listing list : listings) {
+			
+			list.setDateString( new SimpleDateFormat("MM/dd/yyyy").format(list.getDate()) );
+		}
 
 		return ResponseEntity
 				.status(200)
@@ -99,11 +107,54 @@ public class ListingController {
 	}
 	
 	@PostMapping(value="/listing/create.app", consumes = "application/json", produces = "application/json")
-	public ResponseEntity<Listing> createListing(@RequestBody @Valid Listing listing) {
+	public ResponseEntity<Listing> createListing(@RequestBody @Valid Listing listing, @CookieValue(value = "token", defaultValue = "") String token) {
+		
+		int userId = UserService.getUserIdFromJWT(token);
+		if(userId < 1) {
+			return ResponseEntity
+					.status(401)
+					.body(null);
+		}
+		
+		//userId on listing object can't be null
+		User user = new User();
+		user.setId(userId);
+		listing.setUser(user);
+				
+		Listing newListing = listingService.create(listing);
+		
+		//get presigned urls
+		if(newListing.getImageUrls().size() > 0) { //if images (these are not the actual files)
+			
+			List<String> presignedUrls = new ArrayList<String>();
+		
+			String awsUrl = ""; //test
+			int i = 0;
+			for(ImageUrl img : newListing.getImageUrls()) {
+				
+				//listing id / array index
+				String append = newListing.getId().toString() + "/" + Integer.toString(i);
+				
+				String presignedUrl = s3.getPresignedURL(append).toString();
+				
+				presignedUrls.add(presignedUrl);
+				
+				//this is not the presigned url
+				//this is the permanent url to the image on the amazon s3 bucket
+				img.setUrl(awsUrl + "/" + append);
+				
+				i++;
+			}
+			
+			//save the updated listing
+			newListing.setImagePresignedUrls(presignedUrls);
+			
+			newListing = listingDao.save(newListing);		
+		}
 		
 		return ResponseEntity
 				.status(201)
-				.body(listingService.create(listing));
+				.body(newListing);
 	}
 	
 	//JL test methods
