@@ -1,14 +1,18 @@
 package com.revature.dao;
 
 import java.io.File;
+import java.net.URL;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 
+import com.amazonaws.HttpMethod;
 import com.amazonaws.SDKGlobalConfiguration;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 
@@ -35,6 +39,24 @@ public class S3Dao {
 		
 		return status;
 }
+	
+	public URL getPresignedURL(String fileId) {
+		URL presignedURL;
+		AWSCredentials credentials = new BasicAWSCredentials(System.getenv("S3_KEY_ID"), System.getenv("S3_KEY_ACCESS"));
+		AmazonS3 s3client = new AmazonS3Client(credentials);
+		String bucketName = "project2s3";
+		String objectKey = fileId;
+		Date expiration = new Date();
+		long expTimeMilliseconds = expiration.getTime();
+		expTimeMilliseconds += 1000*60*60*24; //Setting the expiration time at 24h
+		GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucketName, objectKey)
+                        .withMethod(HttpMethod.GET)
+                        .withExpiration(new Date(expTimeMilliseconds));
+		presignedURL = s3client.generatePresignedUrl(generatePresignedUrlRequest);		
+		logger.debug("PresignedURL: "+presignedURL.toString());
+		return presignedURL;
+	}
+	
 	
 	public int getFileFromS3(String fileId) {
 		/*
