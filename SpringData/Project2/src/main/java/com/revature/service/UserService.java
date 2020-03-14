@@ -33,7 +33,7 @@ public class UserService {
 	    Date now = new Date(nowMillis);
 
 	    //We will sign our JWT with our ApiKey secret
-	    byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary("1234"); //test. create secret key
+	    byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(System.getenv("P2_JWT")); //test. create secret key
 	    Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
 
 	    //Let's set the JWT Claims
@@ -57,7 +57,7 @@ public class UserService {
 	public static Claims decodeJWT(String jwt) {
 	    //This line will throw an exception if it is not a signed JWS (as expected)
 	    Claims claims = Jwts.parser()
-	            .setSigningKey(DatatypeConverter.parseBase64Binary("1234")) //test. replace secret key with environment var
+	            .setSigningKey(DatatypeConverter.parseBase64Binary(System.getenv("P2_JWT")))
 	            .parseClaimsJws(jwt).getBody();
 	    return claims;
 	}

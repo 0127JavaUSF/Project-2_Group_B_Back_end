@@ -128,7 +128,8 @@ public class ListingController {
 			
 			List<String> presignedUrls = new ArrayList<String>();
 		
-			String awsUrl = ""; //test
+			//String awsUrl = System.getenv("S3_URL_P2"); //test
+			String awsUrl = System.getenv("P2_S3_URL");
 			int i = 0;
 			for(ImageUrl img : newListing.getImageUrls()) {
 				
