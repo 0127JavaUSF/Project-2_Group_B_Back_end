@@ -6,9 +6,11 @@
 2020-03-13 12:57:49 DEBUG S3Dao:76 - uploadFolder: C:\_Revature\Projects\Project 2\Project2_Group_B_Back_end\SpringData\Project2/src/main/resources/file_download/
 2020-03-13 12:57:51 DEBUG S3Dao:56 - PresignedURL: https://project2s3.s3.amazonaws.com/AustralianCattleDog_JimHutchins.jpg?AWSAccessKeyId=AKIAZSEZOSQEBNWXWUMR&Expires=1584205071&Signature=hqbn4e59N5CEpSqNe5zQwIA7WqE%3D
 2020-03-13 12:57:51 DEBUG S3Dao:32 - uploadFolder: C:\_Revature\Projects\Project 2\Project2_Group_B_Back_end\SpringData\Project2/src/main/resources/file_upload/
-2020-03-13 14:32:50 DEBUG S3Dao:76 - uploadFolder: C:\_Revature\Projects\Project 2\Project2_Group_B_Back_end\SpringData\Project2/src/main/resources/file_download/
-2020-03-13 14:32:52 DEBUG S3Dao:56 - PresignedURL: https://s3.amazonaws.com/%21S3_Bucket%21/AustralianCattleDog_JimHutchins.jpg?AWSAccessKeyId=AKIAZSEZOSQEBNWXWUMR&Expires=1584210772&Signature=pGpF09R2GASR8Lc2F%2F5nCBAZxow%3D
-2020-03-13 14:32:52 DEBUG S3Dao:32 - uploadFolder: C:\_Revature\Projects\Project 2\Project2_Group_B_Back_end\SpringData\Project2/src/main/resources/file_upload/
-2020-03-13 14:40:10 DEBUG S3Dao:76 - uploadFolder: C:\_Revature\Projects\Project 2\Project2_Group_B_Back_end\SpringData\Project2/src/main/resources/file_download/
-2020-03-13 14:40:11 DEBUG S3Dao:56 - PresignedURL: https://project2s3.s3.amazonaws.com/AustralianCattleDog_JimHutchins.jpg?AWSAccessKeyId=AKIAZSEZOSQEBNWXWUMR&Expires=1584211211&Signature=bZrA1%2BW81mPMNrNnousUR%2FCUgoE%3D
-2020-03-13 14:40:11 DEBUG S3Dao:32 - uploadFolder: C:\_Revature\Projects\Project 2\Project2_Group_B_Back_end\SpringData\Project2/src/main/resources/file_upload/
+2020-03-13 18:02:30 DEBUG S3Dao:60 - PresignedURL: https://petimages-project2.s3.amazonaws.com/16/0?AWSAccessKeyId=AKIAJZSEQHSXJXVKGBJQ&Expires=1584136913&Signature=JSYyaCCD7eYOXBUhstpklkMwYIY%3D
+2020-03-13 18:06:58 DEBUG S3Dao:60 - PresignedURL: https://petimages-project2.s3.amazonaws.com/17/0?AWSAccessKeyId=AKIAJZSEQHSXJXVKGBJQ&Expires=1584137228&Signature=50HbtGkrTCQkkpU8pzDr91H%2BDKg%3D
+2020-03-13 18:09:33 DEBUG S3Dao:60 - PresignedURL: https://petimages-project2.s3.amazonaws.com/18/0?AWSAccessKeyId=AKIAJZSEQHSXJXVKGBJQ&Expires=1584137383&Signature=NustwAO64A1dYgsHEjk8Oa275kU%3D
+2020-03-13 20:11:11 DEBUG S3Dao:62 - PresignedURL: https://furever-home.s3.amazonaws.com/19/0?AWSAccessKeyId=AKIAY3O7SHITMD22KR4P&Expires=1584144681&Signature=rWb%2BOBJkSjYTlYK6BipGdSLRX90%3D
+2020-03-13 20:22:28 DEBUG S3Dao:62 - PresignedURL: https://furever-home.s3.amazonaws.com/20/0?AWSAccessKeyId=AKIAY3O7SHITMD22KR4P&Expires=1584145358&Signature=wgNOTpM8TATyJbcL8nqjN4F7mnE%3D
+2020-03-13 20:26:09 DEBUG S3Dao:62 - PresignedURL: https://furever-home.s3.amazonaws.com/21/0?AWSAccessKeyId=AKIAY3O7SHITMD22KR4P&Expires=1584145579&Signature=wloiAsr4rQjzcckiL0FM7oCrNhg%3D
+2020-03-13 20:27:58 DEBUG S3Dao:62 - PresignedURL: https://furever-home.s3.amazonaws.com/22/0?AWSAccessKeyId=AKIAY3O7SHITMD22KR4P&Expires=1584145688&Signature=seZjQO6uY%2BrGjKSCO67AyqIyn%2BE%3D
+2020-03-13 20:29:44 DEBUG S3Dao:62 - PresignedURL: https://furever-home.s3.amazonaws.com/23/0?AWSAccessKeyId=AKIAY3O7SHITMD22KR4P&Expires=1584145794&Signature=%2FkZR%2Bf%2BFn6PRQeZ7jeXKP3DuKKA%3D
