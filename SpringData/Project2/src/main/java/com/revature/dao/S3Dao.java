@@ -49,10 +49,12 @@ public class S3Dao {
 
 		try {
 			Regions clientRegion = Regions.US_EAST_2;
-	        String bucketName = "furever-home";
+	        //String bucketName = "furever-home";
+	        String bucketName = "petimages-project2";
 	        String objectKey = fileId;
 
-	        BasicAWSCredentials awsCreds = new BasicAWSCredentials(System.getenv("P2_S3_ID"),System.getenv("P2_S3_SECRET"));
+	        BasicAWSCredentials awsCreds = new BasicAWSCredentials(System.getenv("S3_KEY_ID"),System.getenv("S3_KEY_ACCESS"));
+	        //BasicAWSCredentials awsCreds = new BasicAWSCredentials(System.getenv("P2_S3_ID"),System.getenv("P2_S3_SECRET"));
             AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
                     .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
                     .withRegion(clientRegion)

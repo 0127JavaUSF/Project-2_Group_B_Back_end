@@ -65,24 +65,24 @@ public class UserService {
 	public static int getUserIdFromJWT(String token) {
 
 		//test
-		return 1;
+//		return 1;
 		
-//		if(token == null || token.isEmpty()) {
-//			return 0;
-//		}
-//		
-//		Claims claims = UserService.decodeJWT(token);
-//		if(claims == null) {
-//			return 0;
-//		}
-//		
-//		int userID = 0;
-//		try {
-//			userID = Integer.parseInt( claims.getSubject() );
-//		}
-//		catch(Exception e) {
-//		}
-//		
-//		return userID;
+		if(token == null || token.isEmpty()) {
+			return 0;
+		}
+		
+		Claims claims = UserService.decodeJWT(token);
+		if(claims == null) {
+			return 0;
+		}
+		
+		int userID = 0;
+		try {
+			userID = Integer.parseInt( claims.getSubject() );
+		}
+		catch(Exception e) {
+		}
+		
+		return userID;
 	}
 }

@@ -3,8 +3,11 @@ package com.revature.controller;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
@@ -41,6 +45,33 @@ public class ApplicationController {
 		super();
 		this.appDao = appDao;
 		this.templateDao = templateDao;
+	}
+	
+	@GetMapping(value="/application/by-user.app", produces="application/json")
+	public ResponseEntity<List<Application>> findAllApplicationsByUser(@CookieValue(value = "token", defaultValue = "") String token) {
+	
+		int userId = UserService.getUserIdFromJWT(token);
+		if(userId < 1) {
+			return ResponseEntity
+					.status(401)
+					.body(null);
+		}
+		
+		User user = new User();
+		user.setId(userId);
+
+		List<Application> apps = appDao.findAllByUser(user);
+		//set date
+		for(Application app : apps) {
+			app.setDateString( new SimpleDateFormat("MM/dd/yyyy").format(app.getDate()) );
+			
+			//make sure not lazily loaded
+			app.getTemplate().getListing().getAbout();
+		}
+		
+		return ResponseEntity
+				.status(200)
+				.body(apps);
 	}
 	
 	@PostMapping(value="/application/create.app", consumes = "application/json", produces = "application/json")
@@ -99,5 +130,32 @@ public class ApplicationController {
 		}
 				
 		return ResponseEntity.status(200).body(applications);
+	}
+	
+	@PutMapping(value="/application/update-status.app", consumes="application/json", produces="application/json")
+	@Transactional
+	public ResponseEntity<List<Application>> updateApplicationStatus(@RequestBody @Valid ArrayList<Application> apps, @CookieValue(value = "token", defaultValue = "") String token) {
+		
+		int userId = UserService.getUserIdFromJWT(token);
+		if(userId < 1) {
+			return ResponseEntity
+					.status(401)
+					.body(null);
+		}
+		
+		List<Application> updated = new ArrayList<Application>();
+		for(Application app : apps) { //for all applications
+
+			//get from DB
+			Optional<Application> fromDB = appDao.findById(app.getId());
+			if(fromDB.isPresent()) { //if found
+			
+				fromDB.get().setStatus(app.getStatus()); //update status
+				appDao.save(fromDB.get()); //save
+				updated.add(fromDB.get());
+			}			
+		}
+				
+		return ResponseEntity.status(200).body(updated);
 	}
 }

@@ -78,7 +78,9 @@ public class ListingController {
 		
 		for(Listing list : listings) {
 			
-			list.setDateString( new SimpleDateFormat("MM/dd/yyyy").format(list.getDate()) );
+			if(list.getDate() != null) {
+				list.setDateString( new SimpleDateFormat("MM/dd/yyyy").format(list.getDate()) );
+			}
 		}
 
 		return ResponseEntity
@@ -86,20 +88,33 @@ public class ListingController {
 				.body(listings);
 	}
 	
-	@GetMapping(value="/listing/search.app", produces="application/json", params= {"page", "type", "city"})
-	public Page<Listing> findListingByTypeAndCity(int page, int type, String city) {
+	@GetMapping(value="/listing/search.app", produces="application/json", params= {"page", "type", "city", "state"})
+	public Page<Listing> findListingByTypeAndCity(int page, int type, String city, String state) {
 		
 		//Pageable pageable = PageRequest.of(0, 8, Sort.by("city").descending());
-		Pageable pageable = PageRequest.of(page, 2);
+		Pageable pageable = PageRequest.of(page, 8);
 		
-		if(type > 0 && city.isEmpty() == false) {
+		if(type > 0 && city.isEmpty() == false && state.isEmpty() == false) {
+			return listingDao.findByTypeAndCityAndStateContainingIgnoreCase(type, city, state, pageable);
+		}
+		else if(type > 0 && city.isEmpty() == false) {
 			return listingDao.findByTypeAndCityContainingIgnoreCase(type, city, pageable);
 		}
+		else if(type > 0 && state.isEmpty() == false) {
+			return listingDao.findByTypeAndStateContainingIgnoreCase(type, state, pageable);
+		}
+		else if(city.isEmpty() == false && state.isEmpty() == false) {
+			return listingDao.findByCityAndStateContainingIgnoreCase(type, state, pageable);
+		}
+
 		else if(type > 0) {
 			return listingDao.findByType(type, pageable);
 		}
 		else if(city.isEmpty() == false) {
 			return listingDao.findByCityContainingIgnoreCase(city, pageable);
+		}
+		else if(state.isEmpty() == false) {
+			return listingDao.findByStateContainingIgnoreCase(state, pageable);
 		}
 		else {
 			return listingDao.findAll(pageable);
@@ -128,8 +143,8 @@ public class ListingController {
 			
 			List<String> presignedUrls = new ArrayList<String>();
 		
-			//String awsUrl = System.getenv("S3_URL_P2"); //test
-			String awsUrl = System.getenv("P2_S3_URL");
+			//String awsUrl = System.getenv("P2_S3_URL");
+			String awsUrl = System.getenv("S3_URL_P2");
 			int i = 0;
 			for(ImageUrl img : newListing.getImageUrls()) {
 				
