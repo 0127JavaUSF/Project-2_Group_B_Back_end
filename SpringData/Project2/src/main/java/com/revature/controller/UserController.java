@@ -1,12 +1,14 @@
 package com.revature.controller;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,14 +26,17 @@ public class UserController {
 	
 	private UserDao userDao;
 	
+	private HttpServletRequest request;
+	
 	private HttpServletResponse response;
 
 	public UserController() {}
 	
 	@Autowired
-	public UserController(UserDao userDao, HttpServletResponse response) {
+	public UserController(UserDao userDao, HttpServletRequest request, HttpServletResponse response) {
 		super();
 		this.userDao = userDao;
+		this.request = request;
 		this.response = response;
 	}
 	
@@ -70,5 +75,24 @@ public class UserController {
 		return ResponseEntity
 				.status(401)
 				.body(null);
+	}
+	
+	@GetMapping(value="/user/logout.app")
+	public void logout(@CookieValue(value = "token", defaultValue = "") String token) {
+		
+		Cookie cookies[] = request.getCookies();
+		if(cookies != null) {
+			for(Cookie cookie : cookies) {
+			
+				if(cookie.getName().equals("token")) {
+					
+					cookie.setMaxAge(0); //a zero value will cause the cookie to be deleted
+					
+					response.addCookie(cookie); //update response
+					
+					break;
+				}
+			}
+		}
 	}
 }
