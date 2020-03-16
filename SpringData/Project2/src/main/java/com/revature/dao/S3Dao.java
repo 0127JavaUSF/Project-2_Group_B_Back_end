@@ -63,7 +63,7 @@ public class S3Dao {
             // Set the pre-signed URL to expire after one hour.
             java.util.Date expiration = new java.util.Date();
             long expTimeMillis = expiration.getTime();
-            expTimeMillis += 1000 * 60 * 60;
+            expTimeMillis += 15000;
             expiration.setTime(expTimeMillis);
 
             // Generate the pre-signed URL.
