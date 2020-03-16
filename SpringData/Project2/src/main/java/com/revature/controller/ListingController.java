@@ -95,7 +95,7 @@ public class ListingController {
 		Pageable pageable = PageRequest.of(page, 8);
 		
 		if(type > 0 && city.isEmpty() == false && state.isEmpty() == false) {
-			return listingDao.findByTypeAndCityAndStateContainingIgnoreCase(type, city, state, pageable);
+			return listingDao.findByTypeAndCityContainingIgnoreCaseAndStateContainingIgnoreCase(type, city, state, pageable);
 		}
 		else if(type > 0 && city.isEmpty() == false) {
 			return listingDao.findByTypeAndCityContainingIgnoreCase(type, city, pageable);
@@ -104,7 +104,7 @@ public class ListingController {
 			return listingDao.findByTypeAndStateContainingIgnoreCase(type, state, pageable);
 		}
 		else if(city.isEmpty() == false && state.isEmpty() == false) {
-			return listingDao.findByCityAndStateContainingIgnoreCase(type, state, pageable);
+			return listingDao.findByCityContainingIgnoreCaseAndStateContainingIgnoreCase(city, state, pageable);
 		}
 
 		else if(type > 0) {
